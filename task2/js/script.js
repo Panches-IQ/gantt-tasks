@@ -28,10 +28,15 @@ var tasks =  {
         //if(task.progress == 1) return "<b>" + task.text + ": done</b>";
         //if(task.progress > 0.9) return "<b>" + task.text + "</b>";       
         var formFunc = gantt.date.date_to_str("%F, %d"); 
-        return "" + formFunc(task.start_date) + " - " + formFunc(gantt.date.add(task.start_date, task.duration-1, gantt.config.scale_unit)) + " " + task.text;
+        return "" + formFunc(task.start_date) + " - " + formFunc(gantt.date.add(task.start_date, task.duration-1, gantt.config.scale_unit)) + " " + task.text + 
+        '<button style="margin-left:5px" class="button_delete_task">Delete</button>';
     };
+
+    gantt.attachEvent("onTaskClick", function(id,e){
+        var target = e.target || e.srcElement;
+        if(target.className && target.className == 'button_delete_task') gantt.deleteTask(id);
+        return false;
+    });
 
     gantt.init("gantt_here"); // gantt_here is the ID of div
     gantt.parse(tasks);
-
-    //gantt.getTask(2).color = "red"; // ???
