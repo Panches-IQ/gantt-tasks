@@ -13,10 +13,10 @@ var tasks =  {
                 { id:3, source:3, target:4, type:"0"},
                 { id:4, source:2, target:5, type:"2"},
             ]
-    };
+    },
+    formFunc = gantt.date.date_to_str("%F, %d"); 
 
-    gantt.templates.task_text = function(start, end, task){      
-        var formFunc = gantt.date.date_to_str("%F, %d"); 
+    gantt.templates.task_text = function(start, end, task){  
         return "" + formFunc(task.start_date) + " - " + formFunc(gantt.date.add(task.start_date, task.duration-1, gantt.config.scale_unit)) + " " + task.text + 
         '<button style="margin-left:5px" class="button_delete_task">Delete</button>';
     };
@@ -29,7 +29,10 @@ var tasks =  {
             ok:"Yes", 
             cancel:"Cancel",
             callback: function(result){
-                if(result) gantt.deleteTask(id);
+                if(result) {
+                    gantt.deleteTask(id);
+                    return false;
+                }
             }
             });
         }
