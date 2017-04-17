@@ -14,7 +14,7 @@ var tasks =  {
         if(task.progress>0.75) {
             return "high";
         } 
-        return "";
+        return ""; // no class
     };
 
     gantt.templates.task_text = function(start, end, task){
