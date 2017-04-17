@@ -31,10 +31,9 @@ var tasks =  {
             callback: function(result){
                 if(result) {
                     gantt.deleteTask(id);
-                    return false;
                 }
             }
-            });
+            });        
         }
         return true;
     });
