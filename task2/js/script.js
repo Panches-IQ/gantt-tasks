@@ -33,7 +33,8 @@ var tasks =  {
                     gantt.deleteTask(id);
                 }
             }
-            });        
+            });
+        return false;        
         }
         return true;
     });
