@@ -14,19 +14,8 @@ var tasks =  {
                 { id:4, source:2, target:5, type:"2"},
             ]
     };
-    /*
-    gantt.templates.task_class = function(start, end, task){             
-        if(task.progress>0.75) {
-            task.color = "#CC0000";
-            //task.border = "2px solid green"; // ???
-            return;
-        } 
-        task.color = null; // ???
-    };*/
 
-    gantt.templates.task_text = function(start, end, task){
-        //if(task.progress == 1) return "<b>" + task.text + ": done</b>";
-        //if(task.progress > 0.9) return "<b>" + task.text + "</b>";       
+    gantt.templates.task_text = function(start, end, task){      
         var formFunc = gantt.date.date_to_str("%F, %d"); 
         return "" + formFunc(task.start_date) + " - " + formFunc(gantt.date.add(task.start_date, task.duration-1, gantt.config.scale_unit)) + " " + task.text + 
         '<button style="margin-left:5px" class="button_delete_task">Delete</button>';
@@ -44,8 +33,8 @@ var tasks =  {
             }
             });
         }
-        return false;
+        return true;
     });
 
-    gantt.init("gantt_here"); // gantt_here is the ID of div
+    gantt.init("gantt_here");
     gantt.parse(tasks);
