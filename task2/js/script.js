@@ -26,15 +26,15 @@ var tasks =  {
         if(target.className && target.className == 'button_delete_task') {
             gantt.confirm({
                 text: "Delete task?",
-            ok:"Yes", 
-            cancel:"Cancel",
-            callback: function(result){
-                if(result) {
-                    gantt.deleteTask(id);
-                }
-            }
+                ok:"Yes", 
+                cancel:"Cancel",
+                callback: function(result){
+                    if(result) {
+                        gantt.deleteTask(id);
+                    }
+                }   
             });
-        return false;        
+            return false;        
         }
         return true;
     });
