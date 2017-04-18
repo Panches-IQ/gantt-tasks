@@ -20,20 +20,22 @@ var tasks =  {
         {id:3, name: "Anna", color: "#009922"}, 
         {id:4, name: "Prohor", color: "#9001BA"}
     ]; 
-
-    function getEmployeeById(id, employees) {
+    
+    function getEmployeeById(id) {
         for(var i=0;i<employees.length;i++) if(employees[i].id == id) return employees[i];
         return false;
     };
 
+    function getEmployeeNames(ids) {
+        var names = [];
+        for(var i=0;i<employees.length;i++)
+            for(var j=0;j<ids.length;j++)
+                if(employees[i].id == ids[j]) names.push(employees[i].name);
+        return names.length ? names : false;
+    }
+
     gantt.templates.task_text = function(start, end, task){  
-        var owners = [],
-            employee;
-        for(let i=0;i<task.owner_id.length;i++) {
-            employee = getEmployeeById(task.owner_id[i], employees);
-            if(employee) owners.push(employee.name);        
-            }
-        return "" + task.text + " (" + owners.join(', ') + ")";
+        return "" + task.text + " (" + getEmployeeNames(task.owner_id).join(', ') + ")";
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
@@ -42,14 +44,8 @@ var tasks =  {
         {name: "text", tree: true, width: 160, resize: true},
         {name: "start_date", align: "center", width: 90, resize: true},
         {name: "duration", align: "center", width: 70, resize: true},
-        {name: "owner_id", label: "Owner", align: "center", width: 100, resize: false, template: function(obj){
-            var owners = [],
-                employee;
-            for(var i=0;i<obj.owner_id.length;i++) {
-                employee = getEmployeeById(obj.owner_id[i], employees);
-                if(employee) owners.push(employee.name); 
-            }
-            return owners;
+        {name: "owner_id", label: "Owner", align: "center", width: 100, resize: false, template: function(task){
+            return getEmployeeNames(task.owner_id);
             }
         }
     ];
