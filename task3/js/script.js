@@ -15,17 +15,21 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:1, name: "Vasya"}, 
-        {id:2, name: "Mark"}, 
-        {id:3, name: "Anna"}, 
-        {id:4, name: "Prohor"}
-    ],
-    formFunc = gantt.date.date_to_str("%F, %d"); 
+        {id:1, name: "Vasya", color: "#969911"}, 
+        {id:2, name: "Mark", color: "#810033"}, 
+        {id:3, name: "Anna", color: "#009922"}, 
+        {id:4, name: "Prohor", color: "#9001BA"}
+    ]; 
 
     gantt.templates.task_text = function(start, end, task){  
         var arr = [];
-        for(let i=0;i<employees.length;i++) 
-            for(let j=0;j<task.owner_id.length;j++) if(employees[i].id == task.owner_id[j]) arr.push(" "+employees[i].name);
+
+        for(let i=employees.length-1;i>=0;i--) 
+            for(let j=0;j<task.owner_id.length;j++) 
+                if(employees[i].id == task.owner_id[j]) { 
+                    arr.push(" "+employees[i].name);
+                    task.color = employees[i].color;
+                }
         return "" + task.text + " (" + arr + " )";
     };
 
