@@ -21,11 +21,15 @@ var tasks =  {
         {id:4, name: "Prohor", color: "#9001BA"}
     ]; 
 
+    function getOwnerCssClass(ownerId) {
+        return 'owner_' + ownerId + '_task_color';
+    };
+
     function addCustomStyles() {
         var style = document.createElement('style');
         style.type = 'text/css';
         for(var i=0;i<employees.length;i++) {
-            style.innerHTML += '.owner_' + employees[i].id + '_task_color{background-color: ' + employees[i].color + ';} ';
+            style.innerHTML += '.' + getOwnerCssClass(employees[i].id) + '{background-color: ' + employees[i].color + ';} ';
         }
         style.innerHTML += '.gantt_task_progress {background-color: #545454;opacity: 0.3;}';
         document.getElementsByTagName('head')[0].appendChild(style);
@@ -48,7 +52,9 @@ var tasks =  {
     };
 
     gantt.templates.task_class = function(start, end, task){             
-        return 'owner_' + task.owner_id[0] + '_task_color'; 
+        var css = [];
+        css.push(getOwnerCssClass(task.owner_id[0]));
+        return css.join(" ");
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
