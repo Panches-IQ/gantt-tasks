@@ -20,7 +20,17 @@ var tasks =  {
         {id:3, name: "Anna", color: "#009922"}, 
         {id:4, name: "Prohor", color: "#9001BA"}
     ]; 
-    
+
+    function addCustomStyles() {
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        for(var i=0;i<employees.length;i++) {
+            style.innerHTML += '.owner_' + employees[i].id + '_task_color{background-color: ' + employees[i].color + ';} ';
+        }
+        style.innerHTML += '.gantt_task_progress {background-color: #545454;opacity: 0.3;}';
+        document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
     function getEmployeeById(id) {
         for(var i=0;i<employees.length;i++) if(employees[i].id == id) return employees[i];
         return false;
@@ -36,6 +46,10 @@ var tasks =  {
 
     gantt.templates.task_text = function(start, end, task){  
         return "" + task.text + " (" + getEmployeeNames(task.owner_id).join(', ') + ")";
+    };
+
+    gantt.templates.task_class = function(start, end, task){             
+        return 'owner_' + task.owner_id[0] + '_task_color'; 
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
@@ -58,4 +72,5 @@ var tasks =  {
 
     gantt.init("gantt_here");
     gantt.parse(tasks);
+    addCustomStyles();
     gantt.showLightbox(2);
