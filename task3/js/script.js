@@ -15,7 +15,7 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:1, name: "Vasya", color: "#769911"}, 
+        {id:1, name: "Vasya", color: "#A68911"}, 
         {id:2, name: "Mark", color: "#A12033"}, 
         {id:3, name: "Anna", color: "#009922"}, 
         {id:4, name: "Prohor", color: "#9001BA"}
@@ -38,9 +38,8 @@ var tasks =  {
 
     function getEmployeeNames(ids) {
         var names = [];
-        for(var i=0;i<employees.length;i++)
-            for(var j=0;j<ids.length;j++)
-                if(employees[i].id == ids[j]) names.push(employees[i].name);
+        for(var i=0;i<ids.length;i++)
+            if(getEmployeeById(ids[i])) names.push(getEmployeeById(ids[i]).name);
         return names.length ? names : false;
     }
 
