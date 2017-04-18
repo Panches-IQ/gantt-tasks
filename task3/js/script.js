@@ -1,6 +1,6 @@
 var tasks =  {
         "data":[
-            {id:1, text:"Project TASK1", start_date:"01-04-2013", duration:20,order:10,
+            {id:1, text:"Project TASK1", start_date:"01-04-2013", duration:16,order:10,
                 progress:0.4, open: true, owner_id: [4]},
             {id:2, text:"Sample 1",    start_date:"02-04-2013", duration:4, order:10,
                 progress:0.1, parent:1, owner_id: [1,2]},
@@ -15,22 +15,25 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:1, name: "Vasya", color: "#969911"}, 
-        {id:2, name: "Mark", color: "#810033"}, 
+        {id:1, name: "Vasya", color: "#769911"}, 
+        {id:2, name: "Mark", color: "#A12033"}, 
         {id:3, name: "Anna", color: "#009922"}, 
         {id:4, name: "Prohor", color: "#9001BA"}
     ]; 
 
-    gantt.templates.task_text = function(start, end, task){  
-        var arr = [];
+    function getEmployeeById(id, employees) {
+        for(var i=0;i<employees.length;i++) if(employees[i].id == id) return employees[i];
+        return false;
+    };
 
-        for(let i=employees.length-1;i>=0;i--) 
-            for(let j=0;j<task.owner_id.length;j++) 
-                if(employees[i].id == task.owner_id[j]) { 
-                    arr.push(" "+employees[i].name);
-                    task.color = employees[i].color;
-                }
-        return "" + task.text + " (" + arr + " )";
+    gantt.templates.task_text = function(start, end, task){  
+        var owners = [],
+            employee;
+        for(let i=0;i<task.owner_id.length;i++) {
+            employee = getEmployeeById(task.owner_id[i], employees);
+            if(employee) owners.push(employee.name);        
+            }
+        return "" + task.text + " (" + owners.join(', ') + ")";
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
@@ -40,11 +43,12 @@ var tasks =  {
         {name: "start_date", align: "center", width: 90, resize: true},
         {name: "duration", align: "center", width: 70, resize: true},
         {name: "owner_id", label: "Owner", align: "center", width: 100, resize: false, template: function(obj){
-            var owners = [];
-            for(var i=0;i<employees.length;i++) 
-                for(var j=0;j<obj.owner_id.length;j++)
-                if(employees[i].id == obj.owner_id[j])
-                owners.push(" "+employees[i].name); 
+            var owners = [],
+                employee;
+            for(var i=0;i<obj.owner_id.length;i++) {
+                employee = getEmployeeById(obj.owner_id[i], employees);
+                if(employee) owners.push(employee.name); 
+            }
             return owners;
             }
         }
