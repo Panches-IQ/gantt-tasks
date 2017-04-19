@@ -68,20 +68,22 @@ var tasks =  {
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
     gantt.form_blocks["lb_mult_selector"] = {
-        render: function() {
-            return "<div class='lb_mult_selector' style='height:60px; padding-left: 10px'><select name='test_lb' multiple size='2' style='width:200px;'>" 
-            + "<option value='1'>Vasya</option><option value='2'>Mark</option><option value='3'>Anna</option><option value='4'>Prohor</option><option value='5'>Lidya</option></select></div>";
+        render: function(section) {
+            var rendText = "<div class='lb_mult_selector' style='height:60px; padding-left: 10px'><select name='test_lb' class='lb_mult_input' multiple size='3' style='width:200px;'>";
+            for(var i=0;i<section.array.length;i++) {
+                rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
+            }
+            return rendText + "</select></div>";
         },
         set_value: function(node, value, task, section) {
-            //node.childNodes[1].value = value || "";
-            //node.childNodes[0][1].innerHTML = "WOW!";
-            //node.childNodes[0].innerHTML = "<select> <option>fuc0</option> <option>fuc1</option> </select>";
-            //console.log(node.childNodes[0].value);
-            //node.childNodes[1].value = getEmployeeNames(value) || "";
+            var select = node.querySelector(".lb_mult_input");
+            for(var i=0;i<select.childNodes.length;i++) {
+                select.childNodes[i].selected = false;
+                for(let j=0;j<value.length;j++) if(select.childNodes[i].value == value[j]) select.childNodes[i].selected = true;
+            }
         },
         get_value: function(node, task, section) {
             var result = [];
-            console.log(node.childNodes[0].options[0]['selected']);
             for(var i=0;i<node.childNodes[0].length;i++) if(node.childNodes[0].options[i]['selected']) result.push(node.childNodes[0].options[i].value);
             return result;
         },
@@ -103,7 +105,7 @@ var tasks =  {
     gantt.config.lightbox.sections = [        
         {name: "description", height: 29, map_to: "text", type: "textarea", focus: true},
         {name: "time", type: "duration", allow_root: "true", root_label: "no_parent", map_to: "auto"},
-        {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector"}
+        {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector", array: employees}
     ]; // edits lightbox fields
 
     addCustomStyles(); // changes tasks colors
