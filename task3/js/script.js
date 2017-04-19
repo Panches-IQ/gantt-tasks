@@ -2,9 +2,9 @@ var tasks =  {
         "data":[
             {id:1, text:"Project TASK1", start_date:"01-04-2013", duration:16,order:10,
                 progress:0.4, open: true, owner_id: [4]},
-            {id:2, text:"Sample 1",    start_date:"02-04-2013", duration:4, order:10,
+            {id:2, text:"Sample 1", start_date:"02-04-2013", duration:4, order:10,
                 progress:0.1, parent:1, owner_id: [1,2]},
-            {id:3, text:"Sample 2",    start_date:"06-04-2013", duration:8, order:20,
+            {id:3, text:"Sample 2", start_date:"06-04-2013", duration:8, order:20,
                 progress:0.6, parent: 1, owner_id: [3]}
         ],
         "links":[
@@ -17,8 +17,9 @@ var tasks =  {
     employees = [
         {id:1, name: "Vasya", color: "#A68911"}, 
         {id:2, name: "Mark", color: "#A12033"}, 
-        {id:3, name: "Anna", color: "#009922"}, 
-        {id:4, name: "Prohor", color: "#9001BA"}
+        {id:3, name: "Anna", color: "#00A932"}, 
+        {id:4, name: "Prohor", color: "#9001BA"},
+        {id:5, name: "Lidya", color: "#19C18A"}
     ]; 
 
     function getOwnerCssClass(ownerId) {
@@ -33,7 +34,7 @@ var tasks =  {
         }
         style.innerHTML += '.gantt_task_progress {background-color: #545454;opacity: 0.3;}';
         document.getElementsByTagName('head')[0].appendChild(style);
-    }
+    };
 
     function getEmployeeById(id) {
         for(var i=0;i<employees.length;i++) if(employees[i].id == id) return employees[i];
@@ -42,9 +43,16 @@ var tasks =  {
 
     function getEmployeeNames(ids) {
         var names = [];
-        for(var i=0;i<ids.length;i++)
+        if(ids) for(var i=0;i<ids.length;i++)
             if(getEmployeeById(ids[i])) names.push(getEmployeeById(ids[i]).name);
-        return names.length ? names : false;
+        //return names.length ? names : false;
+        return names;
+    }
+
+    function getOptionsArr() {
+        var optArr = [];
+        optArr.push({key: "1", label: "hjh"});
+        return optArr;
     }
 
     gantt.templates.task_text = function(start, end, task){  
@@ -59,6 +67,29 @@ var tasks =  {
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
+    gantt.form_blocks["lb_mult_selector"] = {
+        render: function() {
+            return "<div class='lb_mult_selector' style='height:60px; padding-left: 10px'><select name='test_lb' multiple size='2' style='width:200px;'>" 
+            + "<option value='1'>Vasya</option><option value='2'>Mark</option><option value='3'>Anna</option><option value='4'>Prohor</option><option value='5'>Lidya</option></select></div>";
+        },
+        set_value: function(node, value, task, section) {
+            //node.childNodes[1].value = value || "";
+            //node.childNodes[0][1].innerHTML = "WOW!";
+            //node.childNodes[0].innerHTML = "<select> <option>fuc0</option> <option>fuc1</option> </select>";
+            //console.log(node.childNodes[0].value);
+            //node.childNodes[1].value = getEmployeeNames(value) || "";
+        },
+        get_value: function(node, task, section) {
+            var result = [];
+            console.log(node.childNodes[0].options[0]['selected']);
+            for(var i=0;i<node.childNodes[0].length;i++) if(node.childNodes[0].options[i]['selected']) result.push(node.childNodes[0].options[i].value);
+            return result;
+        },
+        focus: function() {
+            return false;
+        }
+    };
+
     gantt.config.columns = [
         {name: "text", tree: true, width: 160, resize: true},
         {name: "start_date", align: "center", width: 90, resize: true},
@@ -67,15 +98,16 @@ var tasks =  {
             return getEmployeeNames(task.owner_id);
             }
         }
-    ];
+    ]; // edits grids
 
-    gantt.config.lightbox.sections = [
-        {name: "time", type: "duration", allow_root: "true", root_label: "no_parent", map_to: "auto"},
+    gantt.config.lightbox.sections = [        
         {name: "description", height: 29, map_to: "text", type: "textarea", focus: true},
-        {name: "owners", height: 29, map_to: "owner_id", type: "textarea"}
-    ];
+        {name: "time", type: "duration", allow_root: "true", root_label: "no_parent", map_to: "auto"},
+        {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector"}
+    ]; // edits lightbox fields
 
+    addCustomStyles(); // changes tasks colors
+    
     gantt.init("gantt_here");
-    gantt.parse(tasks);
-    addCustomStyles();
+    gantt.parse(tasks);    
     gantt.showLightbox(2);
