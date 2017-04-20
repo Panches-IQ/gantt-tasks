@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Task 3: owner with plugin</title>
+</head>
+    
+    <script src="../lib/dhtmlxgantt/dhtmlxgantt.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="../lib/dhtmlxgantt/dhtmlxgantt.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="./css/style.css" type="text/css" charset="utf-8">
+
+    <link rel="stylesheet" href="../lib/chosen/docsupport/style.css">
+    <link rel="stylesheet" href="../lib/chosen/docsupport/prism.css">
+    <link rel="stylesheet" href="../lib/chosen/chosen.css">
+
+<body>
+    <div id="gantt_here" style='width:100%; height:80%;'></div>    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
+    <script src="../lib/chosen/chosen.jquery.js" type="text/javascript"></script>
+    <script src="../lib/chosen/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../lib/chosen/docsupport/init.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" src="./js/script.js"> </script>
+
+    <select class="testing_007" name="test_class_selector" multiple> 
+        <option value="0">  </option>
+        <option value="1"> test select1 </option> 
+        <option value="2" selected> test select2 </option>
+        <option value="3"> test select3 </option> 
+        <option value="4"> test select4 </option>
+        <option value="5"> test select5 </option> 
+        <option value="6" disabled> test select6 </option>
+        <option value="7"> test select7 </option> 
+        <option value="8"> test select8 </option>
+        <option value="9"> test select9 </option> 
+        <option value="10"> test select10 </option> 
+        <option value="11"> test select11 </option>
+        <option value="12"> test select12 </option> 
+        <option value="13"> test select13 </option> 
+        <option value="14"> test select14 </option>
+        <option value="15"> test select15 </option> 
+    </select>
+
+    <script>
+    //console.log($(".testing_007").chosen());
+    $(".testing_007").chosen({width:"600px"});
+    </script>
+
+    <div> Plugin "chosen" usage.&nbsp; Copyright &copy; 2017 XB Software</div>
+</body>
+</html>
