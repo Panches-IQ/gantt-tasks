@@ -131,7 +131,7 @@ var tasks =  {
         {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector", array: employees}
     ]; // edits lightbox fields
 
-    addCustomStyles(); // changes tasks colors, transparency for progress
+    addCustomStyles(); // changes tasks colors, transparency for progress, ligtbox custom field
     
     gantt.init("gantt_here");
     gantt.parse(tasks);    
