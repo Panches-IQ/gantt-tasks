@@ -1,3 +1,4 @@
+// incoming data
 var tasks =  {
         "data":[
             {id:1, text:"Project TASK1", start_date:"01-04-2013", duration:16,order:10,
@@ -19,9 +20,12 @@ var tasks =  {
         {id:2, name: "Mark", color: "#A12033"}, 
         {id:3, name: "Anna", color: "#00A932"}, 
         {id:4, name: "Prohor", color: "#9001BA"},
-        {id:5, name: "Lidya", color: "#19C18A"}
+        {id:5, name: "Lidya", color: "#19C18A"},
+        {id:6, name: "Bob Dylan", color: "#4288DD"},
+        {id:7, name: "Bruce Lee", color: "#B6B8C4"}
     ]; 
-
+// end incoming data
+    
     function getOwnerCssClass(ownerId) {
         return 'owner_' + ownerId + '_task_color';
     };
@@ -48,12 +52,12 @@ var tasks =  {
         //return names.length ? names : false;
         return names;
     }
-
+    /*
     function getOptionsArr() {
         var optArr = [];
         optArr.push({key: "1", label: "hjh"});
         return optArr;
-    }
+    }*/
 
     gantt.templates.task_text = function(start, end, task){  
         return "" + task.text + " (" + getEmployeeNames(task.owner_id).join(', ') + ")";
@@ -69,22 +73,34 @@ var tasks =  {
 
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
-            var rendText = "<div class='lb_mult_selector' style='height:60px; padding-left: 10px'><select name='test_lb' class='lb_mult_input' multiple size='3' style='width:200px;'>";
+            var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select name='test_lb'"
+                + "class='lb_mult_input' multiple size='3' style='border:2px solid #B6B8C4;width:50%;'>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
-            return rendText + "</select></div>";
+            rendText += "</select>";
+            return rendText + "<div><div class='lb_mult_textarea' style='margin:-58px 0px 0px 276px;"
+                + "border:2px #B6B8C4 solid;width:46%;height:54px;'></div></div></div>";
         },
         set_value: function(node, value, task, section) {
             var select = node.querySelector(".lb_mult_input");
             for(var i=0;i<select.childNodes.length;i++) {
                 select.childNodes[i].selected = false;
-                for(let j=0;j<value.length;j++) if(select.childNodes[i].value == value[j]) select.childNodes[i].selected = true;
+                for(var j=0;j<value.length;j++) {
+                    if(select.childNodes[i].value == value[j]) {
+                        select.childNodes[i].selected = true;
+                    }
+                }
             }
+            node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(task.owner_id).join(", ");
         },
         get_value: function(node, task, section) {
             var result = [];
-            for(var i=0;i<node.childNodes[0].length;i++) if(node.childNodes[0].options[i]['selected']) result.push(node.childNodes[0].options[i].value);
+            for(var i=0;i<node.childNodes[0].length;i++) {
+                if(node.childNodes[0].options[i]['selected']) {
+                    result.push(node.childNodes[0].options[i].value);
+                }
+            }
             return result;
         },
         focus: function() {
@@ -108,7 +124,7 @@ var tasks =  {
         {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector", array: employees}
     ]; // edits lightbox fields
 
-    addCustomStyles(); // changes tasks colors
+    addCustomStyles(); // changes tasks colors, transparency for progress
     
     gantt.init("gantt_here");
     gantt.parse(tasks);    
