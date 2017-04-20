@@ -74,7 +74,7 @@ var tasks =  {
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
             var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select name='test_lb'"
-                + "class='lb_mult_input' multiple size='3' style='border:2px solid #B6B8C4;width:50%;'>";
+                + "class='lb_mult_input' multiple style='border:2px solid #B6B8C4;width:50%;height:58px'>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
