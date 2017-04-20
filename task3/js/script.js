@@ -102,9 +102,9 @@ var tasks =  {
         },
         get_value: function(node, task, section) {
             var result = [],
-                selectedOptions = node.querySelectorAll(".lb_mult_selector option[selected]");
+                selectedOptions = node.querySelectorAll(".lb_mult_input option[selected]");
                 for (var i=0;i<selectedOptions.length;i++) {
-                    result.push(selectedOptions[i].value)
+                    result.push(selectedOptions[i].value);
                 }
             return result;
         },
