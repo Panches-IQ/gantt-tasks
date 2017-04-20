@@ -16,7 +16,7 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:"1", name: "Vasya The King of the Narnia and Great Babylon Kingdom", color: "#A68911"}, 
+        {id:"1", name: "Vasya", color: "#A68911"}, 
         {id:"2", name: "Mark", color: "#A12033"}, 
         {id:"3", name: "Anna", color: "#00A932"}, 
         {id:"4", name: "Prohor", color: "#9001BA"},
