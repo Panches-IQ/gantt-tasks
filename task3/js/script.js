@@ -31,12 +31,17 @@ var tasks =  {
     };
 
     function addCustomStyles() {
-        var style = document.createElement('style');
-        style.type = 'text/css';
+        var style = document.createElement("style");
+        style.type = "text/css";
+        // for user task color
         for(var i=0;i<employees.length;i++) {
-            style.innerHTML += '.' + getOwnerCssClass(employees[i].id) + '{background-color: ' + employees[i].color + ';} ';
+            style.innerHTML += '.' + getOwnerCssClass(employees[i].id) + "{background-color:" + employees[i].color + ";} ";
         }
-        style.innerHTML += '.gantt_task_progress {background-color: #545454;opacity: 0.3;}';
+        // for task progress
+        style.innerHTML += ".gantt_task_progress {background-color: #545454;opacity: 0.3;}";
+        // for lightbox
+        style.innerHTML += ".lb_mult_selector{height:70px;width:536px;padding-left:10px;}.lb_mult_input{border:1px solid #B6B8C2;width:50%;height:58px;}"
+            + ".lb_mult_textarea{margin:-58px 0px 0px 276px;border:1px #B6B8C2 solid;width:46%;height:54px;}";
         document.getElementsByTagName('head')[0].appendChild(style);
     };
 
@@ -64,10 +69,10 @@ var tasks =  {
     };
 
     function onChangeSelect() {
-        var list = document.querySelector(".lb_mult_input"),
+        var list = document.querySelectorAll(".lb_mult_input option"),
             curList = "";
         for(var i=0;i<list.length;i++) {
-            if(list.childNodes[i].selected) curList += list.childNodes[i].text + ", "
+            if(list[i].selected) curList += list[i].text + ", ";
         }
         document.querySelector(".lb_mult_textarea").innerHTML = curList.slice(0,-2);
     };
@@ -76,14 +81,12 @@ var tasks =  {
 
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
-            var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select onchange='onChangeSelect()'"
-                + "class='lb_mult_input' multiple style='border:1px solid #B6B8C2;width:50%;height:58px'>";
+            var rendText = "<div class='lb_mult_selector'><select onchange='onChangeSelect()' class='lb_mult_input' multiple>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
             rendText += "</select>";
-            return rendText + "<div class='lb_mult_textarea' style='margin:-58px 0px 0px 276px;"
-                + "border:1px #B6B8C2 solid;width:46%;height:54px;'></div></div>";
+            return rendText + "<div class='lb_mult_textarea'></div></div>";
         },
         set_value: function(node, value, task, section) {
             var select = node.querySelector(".lb_mult_input");
@@ -98,10 +101,11 @@ var tasks =  {
             node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(value).join(", ");
         },
         get_value: function(node, task, section) {
-            var result = [];
-            for(var i=0;i<node.childNodes[0].length;i++) {
-                if(node.childNodes[0].options[i]['selected']) {
-                    result.push(node.childNodes[0].options[i].value);
+            var result = [],
+                child = node.childNodes[0];
+            for(var i=0;i<child.length;i++) {
+                if(child.options[i]['selected']) {
+                    result.push(child.options[i].value);
                 }
             }
             return result;
