@@ -66,7 +66,6 @@ var tasks =  {
     function onChangeSelect() {
         var list = document.querySelector(".lb_mult_input"),
             curList = "";
-        console.log(list.childNodes[0].selected);
         for(var i=0;i<list.length;i++) {
             if(list.childNodes[i].selected) curList += list.childNodes[i].text + ", "
         }
