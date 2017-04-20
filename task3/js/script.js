@@ -73,11 +73,10 @@ var tasks =  {
         for(var i=0;i<list.length;i++) {
             if(list[i].selected) curList.push(list[i].value);
         }
-        while(parent && parent.className && parent.className.indexOf('lb_mult_selector') == -1) {
+        while(parent && (parent.className||"").indexOf('lb_mult_selector') == -1) {
             parent = parent.parentNode;
         }
         parent.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(curList);
-        console.log(parent);
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
