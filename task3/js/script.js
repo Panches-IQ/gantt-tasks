@@ -37,11 +37,6 @@ var tasks =  {
         for(var i=0;i<employees.length;i++) {
             style.innerHTML += '.' + getOwnerCssClass(employees[i].id) + "{background-color:" + employees[i].color + ";} ";
         }
-        // for task progress
-        style.innerHTML += ".gantt_task_progress {background-color: #545454;opacity: 0.3;}";
-        // for lightbox
-        style.innerHTML += ".lb_mult_selector{height:70px;width:536px;padding-left:10px;}.lb_mult_input{border:1px solid #B6B8C2;width:50%;height:58px;}"
-            + ".lb_mult_textarea{margin:-58px 0px 0px 276px;border:1px #B6B8C2 solid;width:46%;height:54px;}";
         document.getElementsByTagName('head')[0].appendChild(style);
     };
 
@@ -102,9 +97,11 @@ var tasks =  {
         },
         get_value: function(node, task, section) {
             var result = [],
-                selectedOptions = node.querySelectorAll(".lb_mult_input option[selected]");
-                for (var i=0;i<selectedOptions.length;i++) {
-                    result.push(selectedOptions[i].value);
+                child = node.querySelectorAll(".lb_mult_input option");
+                for(var i=0;i<child.length;i++) {
+                    if(child[i].selected) {
+                        result.push(child[i].value);
+                    }
                 }
             return result;
         },
@@ -129,7 +126,7 @@ var tasks =  {
         {name: "owners", height: 29, map_to: "owner_id", type: "lb_mult_selector", array: employees}
     ]; // edits lightbox fields
 
-    addCustomStyles(); // changes tasks colors, transparency for progress, ligtbox custom field
+    addCustomStyles(); // changes tasks colors
     
     gantt.init("gantt_here");
     gantt.parse(tasks);    

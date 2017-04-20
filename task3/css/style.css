@@ -4,3 +4,26 @@ html, body{
     margin:0px; 
     overflow: hidden;
 }
+
+.gantt_task_progress {
+    background-color: #545454;opacity: 0.3;
+}
+
+.lb_mult_textarea {
+    margin:-58px 0px 0px 276px;
+    border:1px #B6B8C2 solid;
+    width:46%;
+    height:54px;
+}
+
+.lb_mult_selector {
+    height:70px;
+    width:536px;
+    padding-left:10px;
+}
+
+.lb_mult_input {
+    border:1px solid #B6B8C2;
+    width:50%;
+    height:58px;
+}
