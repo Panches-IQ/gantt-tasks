@@ -47,14 +47,17 @@ var tasks =  {
 
     function getEmployeeNames(ids) {
         var names = [];
-        if(ids) for(var i=0;i<ids.length;i++)
-            if(getEmployeeById(ids[i])) names.push(getEmployeeById(ids[i]).name);
+        if(ids) for(var i=0;i<ids.length;i++) {
+            if(getEmployeeById(ids[i])) {
+                names.push(getEmployeeById(ids[i]).name);
+            }
+        }
         //return names.length ? names : false;
-        return names;
+        return names.join(", ");
     }
 
     gantt.templates.task_text = function(start, end, task){  
-        return "" + task.text + " (" + getEmployeeNames(task.owner_id).join(', ') + ")";
+        return "" + task.text + " (" + getEmployeeNames(task.owner_id) + ")";
     };
 
     gantt.templates.task_class = function(start, end, task){             
@@ -63,20 +66,25 @@ var tasks =  {
         return css.join(" ");
     };
 
-    function onChangeSelect() {
-        var list = document.querySelectorAll(".lb_mult_input option"),
-            curList = "";
+    function onChangeSelect(node) {
+        var list = node.querySelectorAll(".lb_mult_input option"),
+            curList = [],
+            parent = node;
         for(var i=0;i<list.length;i++) {
-            if(list[i].selected) curList += list[i].text + ", ";
+            if(list[i].selected) curList.push(list[i].value);
         }
-        document.querySelector(".lb_mult_textarea").innerHTML = curList.slice(0,-2);
+        while(parent && parent.className && parent.className.indexOf('lb_mult_selector') == -1) {
+            parent = parent.parentNode;
+        }
+        parent.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(curList);
+        console.log(parent);
     };
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
-            var rendText = "<div class='lb_mult_selector'><select onchange='onChangeSelect()' class='lb_mult_input' multiple>";
+            var rendText = "<div class='lb_mult_selector'><select onchange='onChangeSelect(this)' class='lb_mult_input' multiple>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
@@ -93,7 +101,7 @@ var tasks =  {
                     }
                 }
             }
-            node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(value).join(", ");
+            node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(value);
         },
         get_value: function(node, task, section) {
             var result = [],
