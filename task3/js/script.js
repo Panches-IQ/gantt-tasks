@@ -52,12 +52,6 @@ var tasks =  {
         //return names.length ? names : false;
         return names;
     }
-    /*
-    function getOptionsArr() {
-        var optArr = [];
-        optArr.push({key: "1", label: "hjh"});
-        return optArr;
-    }*/
 
     gantt.templates.task_text = function(start, end, task){  
         return "" + task.text + " (" + getEmployeeNames(task.owner_id).join(', ') + ")";
@@ -74,13 +68,13 @@ var tasks =  {
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
             var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select name='test_lb'"
-                + "class='lb_mult_input' multiple style='border:2px solid #B6B8C2;width:50%;height:58px'>";
+                + "class='lb_mult_input' multiple style='border:1px solid #B6B8C2;width:50%;height:58px'>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
             rendText += "</select>";
             return rendText + "<div><div class='lb_mult_textarea' style='margin:-58px 0px 0px 276px;"
-                + "border:2px #B6B8C2 solid;width:46%;height:54px;'></div></div></div>";
+                + "border:1px #B6B8C2 solid;width:46%;height:54px;'></div></div></div>";
         },
         set_value: function(node, value, task, section) {
             var select = node.querySelector(".lb_mult_input");
