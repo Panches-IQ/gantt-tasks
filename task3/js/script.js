@@ -95,7 +95,6 @@ var tasks =  {
                     }
                 }
             }
-            console.log(value);
             node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(value).join(", ");
         },
         get_value: function(node, task, section) {
