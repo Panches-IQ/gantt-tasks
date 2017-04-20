@@ -2,11 +2,11 @@
 var tasks =  {
         "data":[
             {id:1, text:"Project TASK1", start_date:"01-04-2013", duration:16,order:10,
-                progress:0.4, open: true, owner_id: [4]},
+                progress:0.4, open: true, owner_id: ["4"]},
             {id:2, text:"Sample 1", start_date:"02-04-2013", duration:4, order:10,
-                progress:0.1, parent:1, owner_id: [1,2]},
+                progress:0.1, parent:1, owner_id: ["1","2"]},
             {id:3, text:"Sample 2", start_date:"06-04-2013", duration:8, order:20,
-                progress:0.6, parent: 1, owner_id: [3]}
+                progress:0.6, parent: 1, owner_id: ["3"]}
         ],
         "links":[
             { id:1, source:1, target:2, type:"1"},
@@ -16,13 +16,13 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:1, name: "Vasya", color: "#A68911"}, 
-        {id:2, name: "Mark", color: "#A12033"}, 
-        {id:3, name: "Anna", color: "#00A932"}, 
-        {id:4, name: "Prohor", color: "#9001BA"},
-        {id:5, name: "Lidya", color: "#19C18A"},
-        {id:6, name: "Bob Dylan", color: "#4288DD"},
-        {id:7, name: "Bruce Lee", color: "#B6B8C4"}
+        {id:"1", name: "Vasya The King of the Narnia and Great Babylon Kingdom", color: "#A68911"}, 
+        {id:"2", name: "Mark", color: "#A12033"}, 
+        {id:"3", name: "Anna", color: "#00A932"}, 
+        {id:"4", name: "Prohor", color: "#9001BA"},
+        {id:"5", name: "Lidya", color: "#19C18A"},
+        {id:"6", name: "Bob Dylan", color: "#4288DD"},
+        {id:"7", name: "Bruce Lee", color: "#B6B8C4"}
     ]; 
 // end incoming data
     
@@ -63,18 +63,28 @@ var tasks =  {
         return css.join(" ");
     };
 
+    function onChangeSelect() {
+        var list = document.querySelector(".lb_mult_input"),
+            curList = "";
+        console.log(list.childNodes[0].selected);
+        for(var i=0;i<list.length;i++) {
+            if(list.childNodes[i].selected) curList += list.childNodes[i].text + ", "
+        }
+        document.querySelector(".lb_mult_textarea").innerHTML = curList.slice(0,-2);
+    };
+
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
     gantt.form_blocks["lb_mult_selector"] = {
         render: function(section) {
-            var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select name='test_lb'"
+            var rendText = "<div class='lb_mult_selector' style='height:70px;width:536px;padding-left:10px;'><select onchange='onChangeSelect()'"
                 + "class='lb_mult_input' multiple style='border:1px solid #B6B8C2;width:50%;height:58px'>";
             for(var i=0;i<section.array.length;i++) {
                 rendText += "<option value='" + section.array[i].id + "'>" + section.array[i].name + "</option>";
             }
             rendText += "</select>";
-            return rendText + "<div><div class='lb_mult_textarea' style='margin:-58px 0px 0px 276px;"
-                + "border:1px #B6B8C2 solid;width:46%;height:54px;'></div></div></div>";
+            return rendText + "<div class='lb_mult_textarea' style='margin:-58px 0px 0px 276px;"
+                + "border:1px #B6B8C2 solid;width:46%;height:54px;'></div></div>";
         },
         set_value: function(node, value, task, section) {
             var select = node.querySelector(".lb_mult_input");
@@ -86,7 +96,8 @@ var tasks =  {
                     }
                 }
             }
-            node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(task.owner_id).join(", ");
+            console.log(value);
+            node.querySelector(".lb_mult_textarea").innerHTML = getEmployeeNames(value).join(", ");
         },
         get_value: function(node, task, section) {
             var result = [];
