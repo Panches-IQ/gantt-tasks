@@ -106,7 +106,7 @@ var tasks =  {
             $select.trigger("chosen:updated");
         },
         get_value: function(node, task, section) {
-            return $(".lb_mult_input").chosen().val();
+            return $(".lb_mult_input").chosen().val() || [];
         },
         focus: function() {
             return false;
