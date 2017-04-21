@@ -10,7 +10,7 @@ html, body{
 }
 
 .lb_mult_selector {
-    height: 100px;
+    height: 110px;
     width:536px;
     padding-left:10px;
 }
@@ -22,5 +22,5 @@ html, body{
 
 .chosen-drop, 
 .chosen-results{
-    height: 70px;
+    height: 76px;
 }

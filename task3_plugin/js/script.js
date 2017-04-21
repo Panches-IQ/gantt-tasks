@@ -55,7 +55,6 @@ var tasks =  {
                 names.push(getEmployeeById(ids[i]).name);
             }
         }
-        //return names.length ? names : false;
         return names.join(", ");
     }
 
@@ -77,7 +76,9 @@ var tasks =  {
 
     gantt.templates.task_class = function(start, end, task){             
         var css = [];
-        css.push(getOwnerCssClass(task.owner_id[0]));
+        if(task.owner_id) {
+            css.push(getOwnerCssClass(task.owner_id[0])); 
+        }
         return css.join(" ");
     };
 
@@ -97,7 +98,7 @@ var tasks =  {
             var select = node.querySelectorAll(".lb_mult_input option");
             for(var i=0;i<select.length;i++) {
                 select[i].selected = false;
-                for(var j=0;j<value.length;j++) {
+                if(value) for(var j=0;j<value.length;j++) {
                     if(select[i].value == value[j]) {
                         select[i].selected = true;
                     }
@@ -106,7 +107,7 @@ var tasks =  {
             $select.trigger("chosen:updated");
         },
         get_value: function(node, task, section) {
-            return $(".lb_mult_input").chosen().val() || [];
+            return $(".lb_mult_input").val() || [];
         },
         focus: function() {
             return false;
@@ -121,7 +122,7 @@ var tasks =  {
             return getEmployeeNames(task.owner_id);
             }
         },
-        {name: "add", label: ""}
+        {name: "add", label: "", width: 40}
     ]; // edits grids
 
     gantt.config.lightbox.sections = [        
