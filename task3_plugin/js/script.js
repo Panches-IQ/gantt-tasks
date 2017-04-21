@@ -88,7 +88,7 @@ var tasks =  {
         task.owner_id = [];
         task.text = "Please enter new task name";
         task.duration = 2;
-        task.progress = 0.5;
+        task.progress = 0.1;
         return true;
     });
 
