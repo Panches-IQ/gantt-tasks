@@ -62,18 +62,6 @@ var tasks =  {
         return names.join(", ");
     }
 
-    function getSelectValues() {
-        var result = [],
-            value = {};
-        for(var i=0;i<employees.length;i++) {
-            value = {};
-            value.key = employees[i].id;
-            value.label = employees[i].name;
-            result.push(value);
-        }
-        return result;
-    }
-
     gantt.templates.task_text = function(start, end, task){  
         return "" + task.text + " (" + getEmployeeNames(task.owner_id) + ")";
     };
