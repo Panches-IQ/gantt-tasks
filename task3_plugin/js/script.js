@@ -25,8 +25,12 @@ var tasks =  {
         {id:"7", name: "Bruce Lee", color: "#B6B8C4"}
     ]; 
 // end incoming data
-    (function j(){
-        for(let i=0;i<30;i++) employees.push({id: 8+i, name: i + 8 + " name", color: "#008888"})
+    (function (){
+        var color = "";
+        for(let i=4;i<33;i++) {
+            color = "#" + i*3 + i*2 + i*1;
+            employees.push({id: 8+i, name: i + 8 + " name", color: color});
+        }
     })();
     
     function getOwnerCssClass(ownerId) {
@@ -75,12 +79,18 @@ var tasks =  {
     };
 
     gantt.templates.task_class = function(start, end, task){             
-        var css = [];
-        if(task.owner_id) {
-            css.push(getOwnerCssClass(task.owner_id[0])); 
-        }
+        var css = [];        
+        css.push(getOwnerCssClass(task.owner_id[0])); 
         return css.join(" ");
     };
+
+    gantt.attachEvent("onTaskCreated", function(task){
+        task.owner_id = [];
+        task.text = "Please enter new task name";
+        task.duration = 2;
+        task.progress = 0;
+        return true;
+    });
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
@@ -96,13 +106,12 @@ var tasks =  {
             var $select = $(node).find(".lb_mult_input");
             $select.chosen({width: "99%"});
             var select = node.querySelectorAll(".lb_mult_input option");
-            for(var i=0;i<select.length;i++) {
-                select[i].selected = false;
-                if(value) for(var j=0;j<value.length;j++) {
-                    if(select[i].value == value[j]) {
-                        select[i].selected = true;
-                    }
-                }
+            var checkedValues = {};
+            for(var i=0;i<value.length;i++) {
+                checkedValues[value[i]] = true;
+            }
+            for(i=0;i<select.length;i++) {
+                select[i].selected = !!checkedValues[select[i].value];
             }
             $select.trigger("chosen:updated");
         },
