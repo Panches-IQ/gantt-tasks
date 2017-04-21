@@ -27,9 +27,9 @@ var tasks =  {
 // end incoming data
     (function (){
         var color = "";
-        for(var i=10;i<33;i++) {
-            color = "#" + i*3 + i*2 + i*1;
-            employees.push({id: 8+i, name: i + 8 + " name", color: color});
+        for(var i=8;i<33;i++) {
+            color = "#" + i*3 + i*2 + i*2;
+            employees.push({id: i, name: "name_" + i, color: color});
         }
     })();
     
