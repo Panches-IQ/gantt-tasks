@@ -27,7 +27,7 @@ var tasks =  {
 // end incoming data
     (function (){
         var color = "";
-        for(let i=4;i<33;i++) {
+        for(var i=10;i<33;i++) {
             color = "#" + i*3 + i*2 + i*1;
             employees.push({id: 8+i, name: i + 8 + " name", color: color});
         }
@@ -88,7 +88,7 @@ var tasks =  {
         task.owner_id = [];
         task.text = "Please enter new task name";
         task.duration = 2;
-        task.progress = 0;
+        task.progress = 0.5;
         return true;
     });
 
