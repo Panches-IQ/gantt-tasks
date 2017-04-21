@@ -1,12 +1,12 @@
 // incoming data
 var tasks =  {
         "data":[
-            {id:1, text:"Project TASK1", type: gantt.config.types.project, progress: 0.2, open: true, owner_id: []},
+            {id:1, text:"Project TASK1", type: gantt.config.types.project, progress: 0.2, open: true, owner_id: ["4"]},
             {id:2, text:"Sample 1", start_date:"02-04-2013", duration:4, order:10, progress:0.1, parent:1, owner_id: ["1","2"]},
-            {id:3, text:"Sample 2", start_date:"06-04-2013", duration:8, order:20, progress:0.6, parent: 1, owner_id: ["3"], open: true},
-            {id:4, text:"Project TASK2", type: gantt.config.types.project, progress: 0.2, open: true, parent: 3, owner_id: []},
-            {id:5, text:"Sample 2", start_date:"08-04-2013", duration:9, order:20, progress:0.6, parent: 4, owner_id: ["4"], open: true},
-            {id:6, text:"Sample 2", start_date:"09-04-2013", duration:12, order:20, progress:0.6, parent: 4, owner_id: ["5","6"], open: true},
+            {id:3, text:"Sample 2", start_date:"06-04-2013", duration:8, order:20, progress:0.7, parent: 1, owner_id: ["3"], open: true},
+            {id:4, text:"Project TASK2", type: gantt.config.types.project, progress: 0.1, open: true, parent: 3, owner_id: ["2"]},
+            {id:5, text:"Sample 2", start_date:"08-04-2013", duration:9, order:20, progress:0.8, parent: 4, owner_id: ["7"], open: true},
+            {id:6, text:"Sample 2", start_date:"09-04-2013", duration:12, order:20, progress:0.4, parent: 4, owner_id: ["5","6"], open: true},
         ],
         "links":[
             { id:1, source:1, target:2, type:"1"},
@@ -80,12 +80,11 @@ var tasks =  {
         while(task && task.type != gantt.config.types.project && task.parent != gantt.config.root_id) {
             id = task.parent;
             task = gantt.getTask(id);     
-            console.log(id);       
         }
         task.progress = getAverageChildrenProgress(id);
         gantt.updateTask(id); 
-        //if(gantt.getTask(id).parent != gantt.config.root_id) resetProjectProgress(id);   
-        return true;    
+        if(gantt.getTask(id).parent != gantt.config.root_id) resetProjectProgress(gantt.getTask(id).parent);           
+        return false;    
     };
 
     gantt.templates.task_text = function(start, end, task){  
@@ -97,6 +96,11 @@ var tasks =  {
         css.push(getOwnerCssClass(task.owner_id[0])); 
         return css.join(" ");
     };
+
+    gantt.attachEvent("onOptionsLoad", function(){
+        var id = 1;
+        resetProjectProgress(id);        
+    });
 
     gantt.attachEvent("onTaskCreated", function(task){
         task.owner_id = [];
@@ -155,8 +159,6 @@ var tasks =  {
             return false;
         }
     };
-
-    //console.log(gantt.config.types.project);
 
     gantt.config.columns = [
         {name: "text", tree: true, width: "*"},
