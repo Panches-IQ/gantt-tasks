@@ -27,8 +27,8 @@ var tasks =  {
 // end incoming data
     (function (){
         var color = "";
-        for(var i=8;i<33;i++) {
-            color = "#" + i*3 + i*2 + i*2;
+        for(var i=8;i<60;i++) {
+            color = ("#" + Math.ceil(Math.random()*100000) + "AAAAAA").slice(0,7);
             employees.push({id: i, name: "name_" + i, color: color});
         }
     })();
