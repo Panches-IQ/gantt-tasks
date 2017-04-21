@@ -1,0 +1,30 @@
+html, body{ 
+    height:100%; 
+    padding:0px; 
+    margin:0px; 
+    overflow: hidden;
+}
+
+.gantt_task_progress {
+    background-color: #545454;opacity: 0.3;
+}
+
+.lb_mult_selector {
+    height: 110px;
+    width:536px;
+    padding-left:10px;
+}
+
+.lb_mult_input {
+    border:1px solid #B6B8C2;
+    width:100%;
+}
+
+.chosen-drop, 
+.chosen-results{
+    height: 76px;
+}
+
+.gantt_dependent_task .gantt_task_progress_drag {
+    visibility: hidden;
+}
