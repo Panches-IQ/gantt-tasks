@@ -58,7 +58,8 @@ var tasks =  {
                 names.push(getEmployeeById(ids[i]).name);
             }
         }
-        return names.join(", ");
+        if(names.length) return names.join(", ");
+        return "<i>none</i>";
     }
 
     function getAverageChildrenProgress(root) {
@@ -99,7 +100,8 @@ var tasks =  {
     };
 
     gantt.templates.task_text = function(start, end, task){  
-        return "" + task.text + " (" + getEmployeeNames(task.owner_id) + ")";
+        var names = getEmployeeNames(task.owner_id);
+        return "" + task.text + " (" + names + ")";
     };
 
     gantt.templates.task_class = function(start, end, task){             
