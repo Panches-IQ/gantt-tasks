@@ -79,7 +79,7 @@ var tasks =  {
 
     function redrawProjectProgress (root) {
         gantt.eachTask(function(child) {
-            gantt.updateTask(child.id);
+            if(child.type == gantt.config.types.project) gantt.updateTask(child.id);
         }, root);
     };
 
