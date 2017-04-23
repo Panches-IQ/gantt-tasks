@@ -27,7 +27,7 @@ var tasks =  {
     (function (){
         var color = "";
         for(var i=8;i<60;i++) {
-            color = ("#" + Math.ceil(Math.random()*100000) + "AAAAAA").slice(0,7);
+            color = ("#" + Math.ceil(Math.random()*100000) + "A5B5C5").slice(0,7);
             employees.push({id: i, name: "name_" + i, color: color});
         }
     })();
@@ -66,7 +66,9 @@ var tasks =  {
             dt = 0,
             dv = 0;
         gantt.eachTask(function(child) {
-            childArr.push([child.progress, child.duration]);
+            if(child.type != gantt.config.types.project) {
+                childArr.push([child.progress, child.duration]);
+            }
         }, root);
         for(var i=0;i<childArr.length;i++) {
             dv += childArr[i][0]*childArr[i][1];
@@ -75,15 +77,22 @@ var tasks =  {
         return dv/dt;
     };
 
-    function resetProjectProgress(id) {
+    function redrawProjectProgress (root) {
+        gantt.eachTask(function(child) {
+            gantt.updateTask(child.id);
+        }, root);
+    };
+
+    function setProjectProgress(id) {
         var task = gantt.getTask(id);      
         while(task && task.type != gantt.config.types.project && task.parent != gantt.config.root_id) {
             id = task.parent;
             task = gantt.getTask(id);     
         }
-        task.progress = getAverageChildrenProgress(id);
-        gantt.updateTask(id); 
-        if(gantt.getTask(id).parent != gantt.config.root_id) resetProjectProgress(gantt.getTask(id).parent);           
+        if(task.type == gantt.config.types.project) {
+            task.progress = getAverageChildrenProgress(id);
+        }
+        if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent);    
         return false;    
     };
 
@@ -97,22 +106,29 @@ var tasks =  {
         return css.join(" ");
     };
 
-    gantt.attachEvent("onOptionsLoad", function(){
-        var id = 1;
-        resetProjectProgress(id);        
+    gantt.attachEvent("onParse", function(){
+        var id = gantt.config.root_id;
+        gantt.eachTask(function(child) {
+            id = child.id;
+        }, gantt.config.root_id);
+        if(id != gantt.config.root_id) {
+            setProjectProgress(id);
+        }
+        return true;        
     });
 
     gantt.attachEvent("onTaskCreated", function(task){
         task.owner_id = [];
         task.text = "Please enter new task name";
-        task.duration = 2;
+        task.duration = 3;
         task.progress = 0.1;
         return true;
     });
 
     gantt.attachEvent("onTaskDrag", function(id, event) { // events: move, progress, resize
         if(event == "progress" || event == "resize") {
-            resetProjectProgress(id);
+            setProjectProgress(id);
+            redrawProjectProgress(gantt.config.root_id);          
         }
         return true;
     });
@@ -124,7 +140,10 @@ var tasks =  {
             return true;
         });
         gantt.attachEvent("onAfterTaskDelete", function() { 
-            if(parentId != gantt.config.root_id) resetProjectProgress(parentId);       
+            if(parentId != gantt.config.root_id) {
+                setProjectProgress(parentId);
+                redrawProjectProgress(gantt.config.root_id);          
+                }       
             return true;
         });
     })();
