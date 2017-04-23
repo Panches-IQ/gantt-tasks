@@ -28,3 +28,7 @@ html, body{
 .gantt_dependent_task .gantt_task_progress_drag {
     visibility: hidden;
 }
+
+.gantt_project_color {
+    background-color: #CCA936;
+}

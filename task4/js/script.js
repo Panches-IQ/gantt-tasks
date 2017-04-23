@@ -2,11 +2,11 @@
 var tasks =  {
         "data":[
             {id:1, text:"Project TASK1", type: gantt.config.types.project, progress: 0.2, open: true, owner_id: ["4"]},
-            {id:2, text:"Sample 1", start_date:"02-04-2013", duration:4, order:10, progress:0.1, parent:1, owner_id: ["1","2"]},
-            {id:3, text:"Sample 2", start_date:"06-04-2013", duration:8, order:20, progress:0.7, parent: 1, owner_id: ["3"], open: true},
+            {id:2, text:"Sample 1", start_date:"02-05-2017", duration:4, order:10, progress:0.1, parent:1, owner_id: ["1","2"]},
+            {id:3, text:"Sample 2", start_date:"06-05-2017", duration:8, order:20, progress:0.7, parent: 1, owner_id: ["3"], open: true},
             {id:4, text:"Project TASK2", type: gantt.config.types.project, progress: 0.1, open: true, parent: 3, owner_id: ["2"]},
-            {id:5, text:"Sample 2", start_date:"08-04-2013", duration:9, order:20, progress:0.8, parent: 4, owner_id: ["7"], open: true},
-            {id:6, text:"Sample 2", start_date:"09-04-2013", duration:12, order:20, progress:0.4, parent: 4, owner_id: ["5","6"], open: true},
+            {id:5, text:"Sample 2", start_date:"08-05-2017", duration:9, order:20, progress:0.8, parent: 4, owner_id: ["7"], open: true},
+            {id:6, text:"Sample 2", start_date:"09-05-2017", duration:12, order:20, progress:0.4, parent: 4, owner_id: ["5","6"], open: true},
         ],
         "links":[
             { id:1, source:1, target:2, type:"1"},
@@ -15,9 +15,9 @@ var tasks =  {
         ]
     },
     employees = [
-        {id:"1", name: "Vasya", color: "#A68911"}, 
+        {id:"1", name: "Vasya", color: "#4699B1"}, 
         {id:"2", name: "Mark", color: "#A12033"}, 
-        {id:"3", name: "Anna", color: "#00A932"}, 
+        {id:"3", name: "Anna", color: "#50D962"}, 
         {id:"4", name: "Prohor", color: "#108888"},
         {id:"5", name: "Lidya", color: "#19C18A"},
         {id:"6", name: "Bob Dylan", color: "#4288DD"},
@@ -83,18 +83,18 @@ var tasks =  {
         }, root);
     };*/
 
-    function setProjectProgress(id, initialFlag) {
+    function setProjectProgress(id, isInit) {
         var task = gantt.getTask(id);
-        initialFlag = initialFlag || false;   
+        isInit = isInit || false;   
         while(task && task.type != gantt.config.types.project && task.parent != gantt.config.root_id) {
             id = task.parent;
             task = gantt.getTask(id);     
         }
         if(task.type == gantt.config.types.project) {
             task.progress = getAverageChildrenProgress(id);
-            if(!initialFlag) gantt.updateTask(id);
+            if(!isInit) gantt.updateTask(id);
         }
-        if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent, initialFlag);    
+        if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent, isInit);    
         return false;    
     };
 
@@ -104,7 +104,11 @@ var tasks =  {
 
     gantt.templates.task_class = function(start, end, task){             
         var css = [];        
-        css.push(getOwnerCssClass(task.owner_id[0])); 
+        if(task.type == gantt.config.types.project) {
+            css.push("gantt_project_color");
+        } else {
+            css.push(getOwnerCssClass(task.owner_id[0]));
+            } 
         return css.join(" ");
     };
 
