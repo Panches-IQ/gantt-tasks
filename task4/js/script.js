@@ -77,22 +77,24 @@ var tasks =  {
         return dv/dt;
     };
 
-    function redrawProjectProgress (root) {
+    /*function redrawProjectProgress (root) {
         gantt.eachTask(function(child) {
             if(child.type == gantt.config.types.project) gantt.updateTask(child.id);
         }, root);
-    };
+    };*/
 
-    function setProjectProgress(id) {
-        var task = gantt.getTask(id);      
+    function setProjectProgress(id, initialFlag) {
+        var task = gantt.getTask(id);
+        initialFlag = initialFlag || false;   
         while(task && task.type != gantt.config.types.project && task.parent != gantt.config.root_id) {
             id = task.parent;
             task = gantt.getTask(id);     
         }
         if(task.type == gantt.config.types.project) {
             task.progress = getAverageChildrenProgress(id);
+            if(!initialFlag) gantt.updateTask(id);
         }
-        if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent);    
+        if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent, initialFlag);    
         return false;    
     };
 
@@ -112,7 +114,7 @@ var tasks =  {
             id = child.id;
         }, gantt.config.root_id);
         if(id != gantt.config.root_id) {
-            setProjectProgress(id);
+            setProjectProgress(id, true);
         }
         return true;        
     });
@@ -128,7 +130,7 @@ var tasks =  {
     gantt.attachEvent("onTaskDrag", function(id, event) { // events: move, progress, resize
         if(event == "progress" || event == "resize") {
             setProjectProgress(id);
-            redrawProjectProgress(gantt.config.root_id);          
+            //redrawProjectProgress(gantt.config.root_id);          
         }
         return true;
     });
@@ -142,8 +144,8 @@ var tasks =  {
         gantt.attachEvent("onAfterTaskDelete", function() { 
             if(parentId != gantt.config.root_id) {
                 setProjectProgress(parentId);
-                redrawProjectProgress(gantt.config.root_id);          
-                }       
+                //redrawProjectProgress(gantt.config.root_id);          
+            }       
             return true;
         });
     })();
