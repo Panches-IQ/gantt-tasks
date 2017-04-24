@@ -19,7 +19,7 @@ var tasks =  {
         {id:"2", name: "Mark", color: "#A12033"}, 
         {id:"3", name: "Anna", color: "#50D962"}, 
         {id:"4", name: "Prohor", color: "#108888"},
-        {id:"5", name: "Lidya", color: "#8951FA"},
+        {id:"5", name: "Lidya", color: "#19C18A"},
         {id:"6", name: "Bob Dylan", color: "#4288DD"},
         {id:"7", name: "Bruce Lee", color: "#B6B8C4"}
     ]; 
@@ -87,7 +87,7 @@ var tasks =  {
         }
         if(task.type == gantt.config.types.project) {
             task.progress = getAverageChildrenProgress(id);
-            if(!isInit) gantt.refreshTask(id);
+            if(!isInit) gantt.updateTask(id);
         }
         if(gantt.getTask(id).parent != gantt.config.root_id) setProjectProgress(gantt.getTask(id).parent, isInit);    
         return false;    
@@ -108,10 +108,6 @@ var tasks =  {
         return css.join(" ");
     };
 
-    gantt.attachEvent("onAfterTaskAdd", function(id) {
-        setProjectProgress(id);
-    });
-
     gantt.attachEvent("onParse", function(){
         var id = gantt.config.root_id;
         gantt.eachTask(function(child) {
@@ -123,17 +119,24 @@ var tasks =  {
         return true;        
     });
 
+    gantt.attachEvent("onBeforeTaskDrag", function(id, mode, e) {
+        console.log(e);
+        if(id == "2") return false;
+        return true;
+    });
+
     gantt.attachEvent("onTaskCreated", function(task){
         task.owner_id = [];
-        task.text = "Please enter task name";
+        task.text = "Please enter new task name";
         task.duration = 3;
         task.progress = 0.1;
         return true;
     });
 
     gantt.attachEvent("onTaskDrag", function(id, mode) { // mode: move, progress, resize
-        if(mode == "progress" || mode == "resize") {
-            setProjectProgress(id);
+        var modes = gantt.config.drag_mode;
+        if(mode == modes.progress || mode == modes.resize) {
+            setProjectProgress(id);        
         }
         return true;
     });
@@ -146,7 +149,7 @@ var tasks =  {
         });
         gantt.attachEvent("onAfterTaskDelete", function() { 
             if(parentId != gantt.config.root_id) {
-                setProjectProgress(parentId);       
+                setProjectProgress(parentId);        
             }       
             return true;
         });
@@ -183,38 +186,6 @@ var tasks =  {
         }
     };
 
-    gantt.locale.labels["section_task_types"] = "Select task type: ";
-
-    gantt.form_blocks["lb_radio_buttons"] = {
-        render: function(section) {
-            var rendText = "<div class='lb_radio_buttons'>";
-            for(var key in gantt.config.types) {
-                rendText += "<input name='lb_task_group' type='radio' value='" + key + "'> " + key + " ";
-            };            
-            return rendText + "</div><br/>";
-        },
-        set_value: function(node, value, task, section) {
-            if(task.type == undefined) task.type = gantt.config.types.task;
-            var input = node.querySelectorAll("input");
-            for(var i=0;i<input.length;i++) {
-                input[i].checked = false;
-                if(input[i].value == task.type) {
-                    input[i].checked = true;
-                }
-            };
-        },
-        get_value: function(node, task, section) {
-            var output = node.querySelectorAll("input");
-            for(var i=0;i<output.length;i++) if(output[i].checked) {
-                var result = output[i].value;
-            }
-            return result;
-        },
-        focus: function() {
-            return false;
-        }
-    };
-
     gantt.config.columns = [
         {name: "text", tree: true, width: "*"},
         {name: "start_date", align: "center", width: 60},
@@ -229,12 +200,11 @@ var tasks =  {
     gantt.config.lightbox.sections = [        
         {name: "description", height: 29, map_to: "text", type: "textarea", focus: true},
         {name: "time", type: "duration", allow_root: "true", root_label: "no_parent", map_to: "auto"},
-        {name: "owners", height: 29, map_to: "owner_id", type: "lb_chosen_selector", array: employees},
-        {name: "task_types", height: 20, map_to: "type", type: "lb_radio_buttons"}        
+        {name: "owners", height: 29, map_to: "owner_id", type: "lb_chosen_selector", array: employees}        
     ]; // edits lightbox fields
 
     addCustomStyles(); // changes tasks colors
 
     gantt.init("gantt_here");
     gantt.parse(tasks);    
-    gantt.showLightbox(2);
+    //gantt.showLightbox(2);
