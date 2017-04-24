@@ -112,6 +112,10 @@ var tasks =  {
         setProjectProgress(id);
     });
 
+    gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
+        //refreshTask(id);
+    });
+
     gantt.attachEvent("onParse", function(){
         var id = gantt.config.root_id;
         gantt.eachTask(function(child) {
