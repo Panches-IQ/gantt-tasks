@@ -26,19 +26,11 @@ var tasks =  {
     date_to_str = gantt.date.date_to_str("%F, %d. %H:%i"); 
 // end incoming data
 
-    function isTaskStarttimePass(id) { // boolean
-        var timeDelta = Math.ceil(gantt.getTask(id).start_date*0.001 - gantt.getMarker(todayMarker).start_date*0.001);
-        if(timeDelta > 0) {
-            return false;
-        } else {
-            return true;
-        }
-    };
-
-    function setTaskReadonly(id) {
+    function isTaskChangeable(id) {
         if(!gantt.getTask(id).$new) {
-            if(isTaskStarttimePass(id)) {
-                gantt.getTask(id).readonly = true;
+            if(gantt.getTask(id).start_date - Date.now() > 0) {
+                return true;
+                } else {
                 return false;
             };
         };
@@ -46,11 +38,11 @@ var tasks =  {
     };
 
     gantt.attachEvent("onBeforeTaskDrag", function(id) {
-        return setTaskReadonly(id);
+        return isTaskChangeable(id);
     });
 
-    gantt.attachEvent("onBeforeTaskSelected", function(id){
-        return setTaskReadonly(id);
+    gantt.attachEvent("onBeforeLightbox", function(id) {
+        return isTaskChangeable(id);
     });
     
     var todayMarker = gantt.addMarker({ 
@@ -60,7 +52,7 @@ var tasks =  {
         title: date_to_str(new Date())
     });
 
-    setInterval(function(){
+    setInterval(function() {
         var today = gantt.getMarker(todayMarker);
         today.start_date = new Date();
         today.title = date_to_str(today.start_date);
