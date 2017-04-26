@@ -6,11 +6,12 @@ html, body{
 }
 
 .gantt_task_progress {
-    background-color: #545454;opacity: 0.3;
+    background-color: #545454;
+    opacity: 0.3;
 }
 
 .lb_mult_selector {
-    height: 110px;
+    height: 40px;
     width:536px;
     padding-left:10px;
 }
@@ -22,7 +23,7 @@ html, body{
 
 .chosen-drop, 
 .chosen-results{
-    height: 76px;
+    height: 90px;
 }
 
 .gantt_dependent_task .gantt_task_progress_drag {
@@ -30,5 +31,9 @@ html, body{
 }
 
 .gantt_project_color {
-    background-color: #CCA936;
+    background-color: #09E19A;
+}
+
+.lb_radio_buttons {
+    padding-left: 10px;
 }
