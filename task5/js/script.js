@@ -26,11 +26,6 @@ var tasks =  {
     date_to_str = gantt.date.date_to_str("%F, %d. %H:%i"); 
 // end incoming data
 
-    function getEmployeeById(id) {
-        for(var i=0;i<employees.length;i++) if(employees[i].id == id) return employees[i];
-        return false;
-    };
-
     function isTaskStarttimePass(id) { // boolean
         var timeDelta = Math.ceil(gantt.getTask(id).start_date*0.001 - gantt.getMarker(todayMarker).start_date*0.001);
         if(timeDelta > 0) {
