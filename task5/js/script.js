@@ -69,6 +69,13 @@ var tasks =  {
         return true;
     });
 
+    gantt.attachEvent("onBeforeLinkAdd", function(id, e) {
+        if(gantt.getTask(e.target).start_date - Date.now() < 0 || gantt.getTask(e.source).start_date - Date.now() < 0) {
+            return false;
+        };
+        return true;
+    });
+
     setInterval(function() {
         var today = gantt.getMarker(todayMarker);
         today.start_date = new Date();
