@@ -127,7 +127,6 @@ var tasks =  {
 
     gantt.attachEvent("onTaskCreated", function(task){
         task.owner_id = [];
-        task.text = "Please enter task name";
         task.duration = 3;
         task.progress = 0.1;
         return true;
@@ -196,6 +195,7 @@ var tasks =  {
     }, 60*1000);
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
+    gantt.locale.labels["new_task"] = "enter task name";
 
     gantt.form_blocks["lb_chosen_selector"] = {
         render: function(section) {
@@ -277,7 +277,7 @@ var tasks =  {
     ]; // edits lightbox fields
 
     addCustomStyles(); // changes tasks colors
-
+    console.log(gantt.locale.labels);
     gantt.init("gantt_here");
     gantt.parse(tasks);    
     //gantt.showLightbox(2);
