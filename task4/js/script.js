@@ -97,9 +97,10 @@ var tasks =  {
         return css.join(" ");
     };
 
-    gantt.attachEvent("onOptionsLoad", function(){
+    gantt.attachEvent("onParse", function(){
         var id = 1;
-        resetProjectProgress(id);        
+        resetProjectProgress(id);       
+        console.log("wsf"); 
     });
 
     gantt.attachEvent("onTaskCreated", function(task){
