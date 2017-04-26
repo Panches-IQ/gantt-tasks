@@ -193,7 +193,7 @@ var tasks =  {
         render: function(section) {
             var rendText = "<div class='lb_radio_buttons'>";
             for(var key in gantt.config.types) {
-                rendText += "<input name='lb_task_group' type='radio' value='" + key + "'> " + key + " ";
+                rendText += "<input name='lb_task_group' type='radio' value='" + key + "'> " + gantt.locale.labels["type_" + key] + " ";
             };            
             return rendText + "</div><br/>";
         },
