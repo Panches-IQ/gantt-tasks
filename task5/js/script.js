@@ -141,8 +141,22 @@ var tasks =  {
     });
 
     gantt.attachEvent("onBeforeTaskDrag", function(id) {
-        console.log(id);
-        gantt.getTask(id).readonly = isTaskStarttimePass(id);
+        if(!gantt.getTask(id).$new) {
+            if(isTaskStarttimePass(id)) {
+                gantt.getTask(id).readonly = true;
+                return false;
+            };
+        };
+        return true;
+    });
+
+    gantt.attachEvent("onBeforeTaskSelected", function(id){
+        if(!gantt.getTask(id).$new) {
+            if(isTaskStarttimePass(id)) {
+                gantt.getTask(id).readonly = true;
+                return false;
+            };
+        };
         return true;
     });
 
@@ -181,11 +195,7 @@ var tasks =  {
         today.start_date = new Date();
         today.title = date_to_str(today.start_date);
         gantt.updateMarker(todayMarker);
-    }, 1000);
-
-    gantt.attachEvent("onBeforeTaskSelected", function(id){
-        gantt.getTask(id).readonly = isTaskStarttimePass(id);
-    });
+    }, 60*1000);
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
