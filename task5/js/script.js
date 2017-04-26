@@ -37,7 +37,8 @@ var tasks =  {
         return true;
     };
 
-    gantt.attachEvent("onBeforeTaskDrag", function(id) {
+    gantt.attachEvent("onBeforeTaskDrag", function(id, mode) {
+        if(mode == "progress") return true;
         return isTaskChangeable(id);
     });
 
@@ -50,6 +51,22 @@ var tasks =  {
         text: "Today",
         css: "today",
         title: date_to_str(new Date())
+    });
+
+    gantt.attachEvent("onAfterTaskAdd", function(id) {
+        if(gantt.getTask(id).start_date - Date.now() < 0) {
+            gantt.confirm({
+                text: "Add task with expired date?",
+                ok: "Yes", 
+                cancel: "Cancel",
+                callback: function(result){
+                    if(!result) {
+                        gantt.deleteTask(id);
+                    };                    
+                }   
+            });      
+        };
+        return true;
     });
 
     setInterval(function() {
