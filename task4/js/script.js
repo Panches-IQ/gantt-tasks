@@ -108,12 +108,6 @@ var tasks =  {
         return css.join(" ");
     };
 
-<<<<<<< HEAD
-    gantt.attachEvent("onParse", function(){
-        var id = 1;
-        resetProjectProgress(id);       
-        console.log("wsf"); 
-=======
     gantt.attachEvent("onAfterTaskAdd", function(id) {
         setProjectProgress(id);
     });
@@ -131,7 +125,6 @@ var tasks =  {
             setProjectProgress(id, true);
         }
         return true;        
->>>>>>> b77f67fd7511d1e8491b730541d7cde906fffab0
     });
 
     gantt.attachEvent("onTaskCreated", function(task){
