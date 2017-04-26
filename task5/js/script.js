@@ -6,7 +6,7 @@ var tasks =  {
             {id:3, text:"Sample 2", start_date:"26-04-2017", duration:8, order:20, progress:0.7, parent: 1, owner_id: ["3"], open: true},
             {id:4, text:"Project TASK2", type: gantt.config.types.project, progress: 0.1, open: true, parent: 3, owner_id: ["2"]},
             {id:5, text:"Sample 2", start_date:"24-04-2017", duration:9, order:20, progress:0.8, parent: 4, owner_id: ["7"], open: true},
-            {id:6, text:"Sample 2", start_date:"25-04-2017", duration:12, order:20, progress:0.4, parent: 4, owner_id: ["5","6"], open: true},
+            {id:6, text:"Sample 2", start_date:"28-04-2017", duration:12, order:20, progress:0.4, parent: 4, owner_id: ["5","6"], open: true},
         ],
         "links":[
             { id:1, source:1, target:2, type:"1"},
@@ -114,10 +114,6 @@ var tasks =  {
         setProjectProgress(id);
     });
 
-    gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-        //refreshTask(id);
-    });
-
     gantt.attachEvent("onParse", function(){
         var id = gantt.config.root_id;
         gantt.eachTask(function(child) {
@@ -144,6 +140,12 @@ var tasks =  {
         return true;
     });
 
+    gantt.attachEvent("onBeforeTaskDrag", function(id) {
+        console.log(id);
+        gantt.getTask(id).readonly = isTaskStarttimePass(id);
+        return true;
+    });
+
     (function () {
         var parentId;
         gantt.attachEvent("onBeforeTaskDelete", function(id) {
@@ -157,22 +159,33 @@ var tasks =  {
             return true;
         });
     })();
-
-    //////////////////////
-    //var todayMarker = gantt.addMarker({start_date: today, text: "Today", title: "Title"});
     
-    gantt.addMarker({
-        start_date: new Date(),
-        css: "status_line",
-        text: "now"
+    var todayMarker = gantt.addMarker({ 
+        start_date: new Date(), 
+        text: "Today",
+        css: "today",
+        title: date_to_str(new Date())
     });
+    
+    function isTaskStarttimePass(id) { // boolean
+        var timeDelta = Math.ceil(gantt.getTask(id).start_date*0.001 - gantt.getMarker(todayMarker).start_date*0.001);
+        if(timeDelta > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 
     setInterval(function(){
-        var today = new Date();
-        console.log(date_to_str(today));    
-    }, 60*1000);
+        var today = gantt.getMarker(todayMarker);
+        today.start_date = new Date();
+        today.title = date_to_str(today.start_date);
+        gantt.updateMarker(todayMarker);
+    }, 1000);
 
-    //////////////////////
+    gantt.attachEvent("onBeforeTaskSelected", function(id){
+        gantt.getTask(id).readonly = isTaskStarttimePass(id);
+    });
 
     gantt.locale.labels["section_owners"] = "Assigned to:";
 
