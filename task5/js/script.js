@@ -140,7 +140,7 @@ var tasks =  {
         return true;
     });
 
-    gantt.attachEvent("onBeforeTaskDrag", function(id) {
+    function setTaskReadonly(id) {
         if(!gantt.getTask(id).$new) {
             if(isTaskStarttimePass(id)) {
                 gantt.getTask(id).readonly = true;
@@ -148,16 +148,14 @@ var tasks =  {
             };
         };
         return true;
+    }
+
+    gantt.attachEvent("onBeforeTaskDrag", function(id) {
+        return setTaskReadonly(id);
     });
 
     gantt.attachEvent("onBeforeTaskSelected", function(id){
-        if(!gantt.getTask(id).$new) {
-            if(isTaskStarttimePass(id)) {
-                gantt.getTask(id).readonly = true;
-                return false;
-            };
-        };
-        return true;
+        return setTaskReadonly(id);
     });
 
     (function () {
