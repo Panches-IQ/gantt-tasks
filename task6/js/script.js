@@ -56,19 +56,18 @@ var tasks =  {
                     slackEndTime,
                     slack = 0;
                 for(var i=0;i<task.$source.length;i++) {
-                    if(gantt.getLink(task.$source[i]).type == "0")
                         targetTaskArr.push(gantt.getTask(gantt.getLink(task.$source[i]).target));
                 };
                 slackEndTime = targetTaskArr[0].start_date;
                 for(i=0;i<targetTaskArr.length;i++) {
-                    if(slackEndTime > targetTaskArr[i].start_date) {
+                    if(+slackEndTime > +targetTaskArr[i].start_date) {
                         slackEndTime = targetTaskArr[i].start_date;
                         nearestId = i;
                     }
                 };
                 pos = gantt.getTaskPosition(task, task.end_date, slackEndTime);                  
                 slack = gantt.getSlack(task, targetTaskArr[nearestId]);
-                if(slack > 0 && slack != Number.POSITIVE_INFINITY) {
+                if(slack > 0) {
                     return getSlackElem(pos); 
                 }
             }
