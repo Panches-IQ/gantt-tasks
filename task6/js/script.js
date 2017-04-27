@@ -41,7 +41,7 @@ var tasks =  {
         var el = document.createElement("div");
         el.className = 'gantt_custom_slack';
         el.style.left = pos.left + "px";
-        el.style.width = pos.width + "px";
+        el.style.width = pos.width - 2 + "px";
         el.style.height = pos.height - 2 + "px";
         el.style.top = pos.top  + "px";
         return el;
