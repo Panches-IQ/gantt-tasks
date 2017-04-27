@@ -37,6 +37,16 @@ var tasks =  {
     date_to_str = gantt.date.date_to_str("%F, %d. %H:%i"); 
 // end incoming data
 
+    function getSlackElem(pos) {
+        var el = document.createElement("div");
+        el.className = 'gantt_custom_slack';
+        el.style.left = pos.left + "px";
+        el.style.width = pos.width + "px";
+        el.style.height = pos.height - 2 + "px";
+        el.style.top = pos.top  + "px";
+        return el;
+    };
+
     gantt.addTaskLayer(function fnc(task) {
         if(!gantt.isCriticalTask(task) && gantt.getSelectedId() == task.id) {
             if(task.$source.length > 0 && task.parent != gantt.config.root_id) {  
@@ -59,13 +69,7 @@ var tasks =  {
                     pos = gantt.getTaskPosition(task, task.end_date, slackEndTime),                    
                     slack = gantt.getSlack(task, targetTaskArr[nearestId]);
                 if(slack > 0 && slack != Number.POSITIVE_INFINITY) {
-                    var el = document.createElement("div");
-                    el.className = 'gantt_custom_slack';
-                    el.style.left = pos.left + "px";
-                    el.style.width = pos.width + "px";
-                    el.style.height = pos.height - 2 + "px";
-                    el.style.top = pos.top  + "px";
-                    return el; 
+                    return getSlackElem(pos); 
                 }
             }
         }
