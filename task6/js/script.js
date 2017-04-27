@@ -66,8 +66,8 @@ var tasks =  {
                         nearestId = i;
                     }
                 };
-                    pos = gantt.getTaskPosition(task, task.end_date, slackEndTime),                    
-                    slack = gantt.getSlack(task, targetTaskArr[nearestId]);
+                pos = gantt.getTaskPosition(task, task.end_date, slackEndTime);                  
+                slack = gantt.getSlack(task, targetTaskArr[nearestId]);
                 if(slack > 0 && slack != Number.POSITIVE_INFINITY) {
                     return getSlackElem(pos); 
                 }
