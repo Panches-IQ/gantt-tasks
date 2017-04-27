@@ -4,10 +4,10 @@ var tasks =  {
             {id:1, text:"Task id 1", type: gantt.config.types.project, open: true, owner_id: ["4"]},
             {id:2, text:"Task id 2", start_date:"24-04-2017", duration:3, parent: 1, owner_id: ["1","2"], open: true},
             {id:3, text:"Task id 3", start_date:"27-04-2017", duration:2, parent: 2, owner_id: ["3"], open: true},
-            {id:4, text:"Task id 4", start_date:"29-04-2017", duration:2, parent: 3, owner_id: ["2"], open: true},
+            {id:4, text:"Task id 4", start_date:"28-04-2017", duration:2, parent: 3, owner_id: ["2"], open: true},
             {id:5, text:"Task id 5", start_date:"27-04-2017", duration:1, parent: 2, owner_id: ["7"], open: true},
             {id:6, text:"Task id 6", start_date:"28-04-2017", duration:3, parent: 4, owner_id: ["5","6"], open: true},
-            {id:7, text:"Task id 7", start_date:"30-04-2017", duration:2, parent: 5, owner_id: ["6"], open: true},
+            {id:7, text:"Task id 7", start_date:"01-05-2017", duration:2, parent: 5, owner_id: ["6"], open: true},
             {id:8, text:"Task id 8", start_date:"02-05-2017", duration:2, parent: 5, owner_id: ["6"], open: true},
             {id:9, text:"Task id 9", start_date:"03-05-2017", duration:3, parent: 5, owner_id: ["6"], open: true}
         ],
