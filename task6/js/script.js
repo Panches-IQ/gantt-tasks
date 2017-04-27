@@ -46,7 +46,8 @@ var tasks =  {
                     slackEndTime,
                     slack = 0;
                 for(var i=0;i<task.$source.length;i++) {
-                    targetTaskArr.push(gantt.getTask(gantt.getLink(task.$source[i]).target));
+                    if(gantt.getLink(task.$source[i]).type == "0")
+                        targetTaskArr.push(gantt.getTask(gantt.getLink(task.$source[i]).target));
                 };
                 slackEndTime = targetTaskArr[0].start_date;
                 for(i=0;i<targetTaskArr.length;i++) {
