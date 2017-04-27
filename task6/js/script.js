@@ -36,20 +36,16 @@ var tasks =  {
 // end incoming data
 
     gantt.addTaskLayer(function fnc(task) {
-
         if(!gantt.isCriticalTask(task) && gantt.getSelectedId() == task.id) {
-
-            if(task.$source.length > 0 && task.parent != gantt.config.root_id) {
-            
-                var pos = gantt.getTaskPosition(task, task.start_date, task.end_date),
-                    task2 = gantt.getTask(gantt.getLink(task.$source[0]).target),
-                    slack = gantt.getSlack(task, task2),
-                    gridWidth = pos.width/task.duration;
-                if(slack > 0) {
+            if(task.$source.length > 0 && task.parent != gantt.config.root_id) {            
+                var task2 = gantt.getTask(gantt.getLink(task.$source[0]).target),
+                    pos = gantt.getTaskPosition(task, task.end_date, task2.start_date),                    
+                    slack = gantt.getSlack(task, task2);
+                if(slack > 0 && slack != Number.POSITIVE_INFINITY) {
                     var el = document.createElement("div");
                     el.className = 'gantt_custom_slack';
-                    el.style.left = pos.left + pos.width + "px";
-                    el.style.width = slack*gridWidth + "px";
+                    el.style.left = pos.left + "px";
+                    el.style.width = pos.width + "px";
                     el.style.height = pos.height - 2 + "px";
                     el.style.top = pos.top  + "px";
                     return el; 
@@ -64,6 +60,13 @@ var tasks =  {
     gantt.config.highlight_critical_path = true;
     //gantt.config.row_height = 30;
     gantt.config.task_height = 30;
+    gantt.config.work_time = true;
+    //gantt.skip_off_time = true;
+
+    gantt.templates.task_cell_class = function(task, date) {
+        if(!gantt.isWorkTime(date)) return "week_end";
+        return "";
+    };
 
     gantt.init("gantt_here");
     gantt.parse(tasks);    

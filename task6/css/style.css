@@ -34,20 +34,8 @@ html, body{
         #000000 8px
         );
 }
-/*
-.gantt_task_line, .gantt_line_wrapper {
-    margin-top: -9px;
-}
 
-.gantt_side_content {
-    margin-bottom: 7px;
+.week_end {
+    background-color: #707070;
+    opacity: 0.1;
 }
-
-.gantt_task_link .gantt_link_arrow {
-    margin-top: -12px;
-}
-
-.gantt_side_content.gantt_right {
-    bottom: 0;
-}
-*/
